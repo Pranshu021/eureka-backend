@@ -31,8 +31,8 @@ async def junior_analyst_one(state):
                 all_results[term] = "No results"
             prompt = ANALYST_PROMPT.format(topics=", ".join(search_terms), results=json.dumps(all_results, indent=2))
 
-            # resp = await openai_llm.ainvoke(prompt)
-            resp = await gemini_llm.ainvoke(prompt) # FOR TESTING
+            resp = await openai_llm.ainvoke(prompt)
+            # resp = await gemini_llm.ainvoke(prompt) # FOR TESTING
             final_report = resp.content if hasattr(resp, "content") else str(resp)
             state["junior_analyst_one_report"] = final_report
             state["messages"].append(AIMessage(content=final_report))

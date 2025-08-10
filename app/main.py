@@ -1,5 +1,5 @@
 # app/main.py
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -12,7 +12,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173"
+    "http://127.0.0.1:5173",
+    "https://eureka-frontend-azure.vercel.app/"
 ]
 
 app.add_middleware(
@@ -23,8 +24,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+API_KEY = os.getenv("SECRET_API_KEY")
+
 class QueryRequest(BaseModel):
     query: str
+
+@app.middleware("http")
+async def verify_api_key(request: Request, call_next):
+    if request.method == "OPTIONS":
+        return await call_next(request)
+    client_key = request.headers.get("x-api-key")
+    if client_key != API_KEY:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    return await call_next(request)    
 
 @app.post("/generate-report")
 async def generate_report(request: QueryRequest):
