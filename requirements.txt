@@ -1,0 +1,14 @@
+gradio
+langgraph
+langchain
+langchain_openai
+langchain_anthropic
+langchain_google_genai
+python-docx
+pydantic
+langchain-community
+langchain-core
+dotenv
+pydantic
+fastapi
+uvicorn
