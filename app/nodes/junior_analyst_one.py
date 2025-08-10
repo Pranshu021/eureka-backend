@@ -7,11 +7,6 @@ from dotenv import load_dotenv
 from app.config import serper, openai_llm, gemini_llm
 load_dotenv()
 
-# openai_llm = ChatOpenAI(model="gpt-4o-mini")
-# gemini_llm = GoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GOOGLE_API_KEY"))
-# serper = GoogleSerperAPIWrapper()
-
-
 @traceable(run_type="chain", name="Junior Analyst Node")
 async def junior_analyst_one(state):
     search_terms = state.get("search_terms", [])

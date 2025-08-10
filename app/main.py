@@ -13,7 +13,9 @@ app = FastAPI()
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "https://eureka-frontend-azure.vercel.app/"
+    "https://eureka-frontend-azure.vercel.app",
+    "https://www.eurekasearch.in",
+    "https://eurekasearch.in"
 ]
 
 app.add_middleware(

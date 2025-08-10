@@ -30,13 +30,15 @@ async def research_assistant(state):
     prompt = RESEARCH_ASSISTANT_PROMPT.format(query=query, format_instructions=parser.get_format_instructions())
     response = await gemini_llm.ainvoke(prompt)
     response_text = response.content if hasattr(response, "content") else str(response)
+    print("Response: ", response_text)
+    if "invalid topic" in response_text.lower():
+        raise ValueError(f"Invalid topic")
     
     try:
         parsed = parser.parse(response_text)
-        # logging.info(f"Validated Search Terms: {parsed.search_terms}")
         state["search_terms"] = parsed.search_terms
     except Exception as e:
-        logging.error(f"Parsing failed: {e}")
+        logger.error(f"Parsing failed: {e}")
         state["search_terms"] = []
 
     return state
