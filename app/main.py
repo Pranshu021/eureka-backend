@@ -1,6 +1,6 @@
 # app/main.py
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from app.graph import graph
@@ -33,12 +33,16 @@ class QueryRequest(BaseModel):
 
 @app.middleware("http")
 async def verify_api_key(request: Request, call_next):
-    if request.method == "OPTIONS":
+    if request.method == "OPTIONS" or request.url.path == "/health":
         return await call_next(request)
     client_key = request.headers.get("x-api-key")
     if client_key != API_KEY:
         raise HTTPException(status_code=403, detail="Forbidden")
-    return await call_next(request)    
+    return await call_next(request)
+
+@app.get("/health")
+def health_check():
+    return JSONResponse(content={"status": "healthy"}, status_code=200)
 
 @app.post("/generate-report")
 async def generate_report(request: QueryRequest):
