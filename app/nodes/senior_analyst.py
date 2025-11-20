@@ -21,7 +21,7 @@ async def senior_analyst(state):
     prompt = SENIOR_ANALYST_PROMPT.format(report1=junior_analyst_one_report, report2=junior_analyst_two_report)
 
     response = await anthropic_llm.ainvoke(prompt)
-    # response = await gemini_llm.ainvoke(prompt) # FOR TESTING
+    # response = await gemini_llm_flash.ainvoke(prompt) # FOR TESTING
 
     final_report = response.content if hasattr(response, "content") else str(response)
 

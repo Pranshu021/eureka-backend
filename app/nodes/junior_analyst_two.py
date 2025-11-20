@@ -7,8 +7,6 @@ load_dotenv()
 from langsmith import traceable
 from app.config import serper, gemini_llm
 
-# gemini_llm = GoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=os.getenv("GOOGLE_API_KEY"))
-# serper = GoogleSerperAPIWrapper()
 
 @traceable(run_type="chain", name="Junior Analyst Two Node")
 async def junior_analyst_two(state):

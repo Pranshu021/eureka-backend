@@ -3,7 +3,7 @@ from langchain_core.messages import HumanMessage
 from app.nodes.prompts import RESEARCH_ASSISTANT_PROMPT
 from app.utils import logger
 from pydantic import BaseModel
-from langchain.output_parsers import PydanticOutputParser
+from langchain_core.output_parsers import PydanticOutputParser
 from langsmith import traceable
 from dotenv import load_dotenv
 from app.config import gemini_llm
@@ -28,6 +28,7 @@ async def research_assistant(state):
     if not query:
         raise ValueError("No user query found in state['messages'].")
     prompt = RESEARCH_ASSISTANT_PROMPT.format(query=query, format_instructions=parser.get_format_instructions())
+    # response = await gemini_llm_flash.ainvoke(prompt)
     response = await gemini_llm.ainvoke(prompt)
     response_text = response.content if hasattr(response, "content") else str(response)
     print("Response: ", response_text)
